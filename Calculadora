@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'dart:math';
 
 void main() {
@@ -14,9 +15,16 @@ void main() {
   print('9. Tangente (tan)');
   print('10. Logaritmo Natural (ln)');
   print('11. Logaritmo Base 10 (log10)');
-  
-  final choice = int.parse(stdin.readLineSync()!);
-  double result = 0.0;
+
+  int choice;
+  try {
+    choice = int.parse(stdin.readLineSync()!);
+  } catch (e) {
+    print('Erro: Entrada inválida.');
+    return;
+  }
+
+  double result;
 
   switch (choice) {
     case 1:
@@ -31,26 +39,24 @@ void main() {
     case 4:
       result = divide();
       break;
-    case 5:
-      result = power();
-      break;
+    
     case 6:
-      result = sqrt();
+      result = sqrtOperation();
       break;
     case 7:
-      result = sin();
+      result = sinOperation();
       break;
     case 8:
-      result = cos();
+      result = cosOperation();
       break;
     case 9:
-      result = tan();
+      result = tanOperation();
       break;
     case 10:
-      result = ln();
+      result = lnOperation();
       break;
     case 11:
-      result = log10();
+      result = log10Operation();
       break;
     default:
       print('Opção inválida.');
@@ -62,33 +68,33 @@ void main() {
 
 double add() {
   print('Digite o primeiro número:');
-  double a = double.parse(stdin.readLineSync()!);
+  double a = _readDouble();
   print('Digite o segundo número:');
-  double b = double.parse(stdin.readLineSync()!);
+  double b = _readDouble();
   return a + b;
 }
 
 double subtract() {
   print('Digite o primeiro número:');
-  double a = double.parse(stdin.readLineSync()!);
+  double a = _readDouble();
   print('Digite o segundo número:');
-  double b = double.parse(stdin.readLineSync()!);
+  double b = _readDouble();
   return a - b;
 }
 
 double multiply() {
   print('Digite o primeiro número:');
-  double a = double.parse(stdin.readLineSync()!);
+  double a = _readDouble();
   print('Digite o segundo número:');
-  double b = double.parse(stdin.readLineSync()!);
+  double b = _readDouble();
   return a * b;
 }
 
 double divide() {
   print('Digite o primeiro número:');
-  double a = double.parse(stdin.readLineSync()!);
+  double a = _readDouble();
   print('Digite o segundo número:');
-  double b = double.parse(stdin.readLineSync()!);
+  double b = _readDouble();
   if (b == 0) {
     print('Erro: Divisão por zero.');
     return double.nan;
@@ -96,17 +102,11 @@ double divide() {
   return a / b;
 }
 
-double power() {
-  print('Digite a base:');
-  double base = double.parse(stdin.readLineSync()!);
-  print('Digite o expoente:');
-  double exponent = double.parse(stdin.readLineSync()!);
-  return pow(base, exponent);
-}
 
-double sqrt() {
+
+double sqrtOperation() {
   print('Digite o número:');
-  double number = double.parse(stdin.readLineSync()!);
+  double number = _readDouble();
   if (number < 0) {
     print('Erro: Não é possível calcular a raiz quadrada de um número negativo.');
     return double.nan;
@@ -114,40 +114,49 @@ double sqrt() {
   return sqrt(number);
 }
 
-double sin() {
+double sinOperation() {
   print('Digite o ângulo em radianos:');
-  double angle = double.parse(stdin.readLineSync()!);
+  double angle = _readDouble();
   return sin(angle);
 }
 
-double cos() {
+double cosOperation() {
   print('Digite o ângulo em radianos:');
-  double angle = double.parse(stdin.readLineSync()!);
+  double angle = _readDouble();
   return cos(angle);
 }
 
-double tan() {
+double tanOperation() {
   print('Digite o ângulo em radianos:');
-  double angle = double.parse(stdin.readLineSync()!);
+  double angle = _readDouble();
   return tan(angle);
 }
 
-double ln() {
+double lnOperation() {
   print('Digite o número:');
-  double number = double.parse(stdin.readLineSync()!);
+  double number = _readDouble();
   if (number <= 0) {
     print('Erro: O logaritmo natural só é definido para números maiores que zero.');
     return double.nan;
   }
-  return ln(number);
+  return log(number);
 }
 
-double log10() {
+double log10Operation() {
   print('Digite o número:');
-  double number = double.parse(stdin.readLineSync()!);
+  double number = _readDouble();
   if (number <= 0) {
     print('Erro: O logaritmo base 10 só é definido para números maiores que zero.');
     return double.nan;
   }
   return log(number) / log(10);
+}
+
+double _readDouble() {
+  try {
+    return double.parse(stdin.readLineSync()!);
+  } catch (e) {
+    print('Erro: Entrada inválida.');
+    return double.nan;
+  }
 }
